@@ -7,7 +7,7 @@ const beareer=(req,res,next)=>{
     else{
         const bearer=token.split(" ");
         const value=bearer[1];
-        // req.token=value;
+       
         const user=jwt.verify(value,process.env.secretkey);
         const userid=user.id;
         req.userid=userid;
