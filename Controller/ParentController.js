@@ -113,16 +113,18 @@ exports.deleteuser=async(req,res)=>{
 
        const id=req.body.id;
        const userdata=await User.findOne({where:{id:id}});
+       if(account_type===0){
        if(!userdata){
         res.status(500).json({msg:"user doesnot found"});
         return;
        }
-       else if(account_type===0){
+       else {
        await User.destroy({where:{id:id}});
        res.status(200).json("User delete successfully");
        return;
        }
-       else{
+     
+    }  else{
         res.status(500).json({msg:"Unauthorized user"});
        }
     } catch (error) {

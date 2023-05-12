@@ -150,7 +150,7 @@ exports.resetpassword=async(req,res)=>{
 
        if(password===cpassword){
         const hashpass= await bcrypt.hash(password,12);
-          const userupdate=await User.update({password:hashpass},{where:{id:userid}});
+        await User.update({password:hashpass},{where:{id:userid}});
 
           res.status(200).json({msg:"user updated successfully...."});
        }
