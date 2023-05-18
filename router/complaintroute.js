@@ -13,6 +13,8 @@ router.delete('/deletecomplaint',auth,complaintcontroller.deletecomplaint);
 
 router.post('/getrequest',auth,complaintcontroller.getrequest)
 
-router.post('/getpayment',auth,complaintcontroller.getpayment);
+router.post('/getpayment',auth,complaintcontroller.getpayment); 
+
+router.post('/getinvoice',auth,complaintcontroller.getinvoice);
 
 module.exports=router;

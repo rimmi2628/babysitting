@@ -1,9 +1,9 @@
 const model=require('../models');
-const payment = require('../models/payment');
 const User=model.User;
 const Complaint=model.Complaint;
 const Request=model.Request;
 const Payment=model.Payment;
+const Invoice=model.Invoice;
 
 exports.createcomplaint=async(req,res)=>{
     try {
@@ -118,5 +118,31 @@ exports.getpayment=async(req,res)=>{
   } catch (error) {
     console.log(error)
     res.status(500).json({err:error});
+  }
+}
+
+exports.getinvoice=async(req,res)=>{
+  try {
+    const page =req.body.page;
+    const limit=req.body.limit;
+    const offset=(page-1)*limit 
+    const id=req.body.id;
+    if (id ) {
+      const invo= await Invoice.findByPk(id);
+              if (invo) {
+               return res.status(200).json({ data:invo});
+               } else {
+               return res.status(404).json({ message: "invoice not found" });
+              }
+             }
+             else{
+            const invoice=await Invoice.findAll({
+            offset,
+            limit
+          });
+          return res.status(200).json({data:invoice});
+             }
+  } catch (error) {
+    console.log(error);
   }
 }
