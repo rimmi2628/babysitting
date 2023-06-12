@@ -31,17 +31,17 @@ exports.getcomplaint=async(req,res)=>{
     try {
        
        
-        const page=req.body.page;
-        const limit=req.body.limit;
+        const page=req.body.page||5;
+        const limit=req.body.limit||5;
         const offset=(page-1)*limit;
        
         const account_type=req.body.account_type;
         
    
-        const data=await Complaint.findAll({where:{account_type:account_type},
+        const {rows,count}=await Complaint.findAndCountAll({where:{account_type:account_type},
 
         offset,limit});
-        res.status(200).json({data:data});
+        res.status(200).json({data:rows,count:count});
         
     } catch (error) {
       console.log(error) ; 
