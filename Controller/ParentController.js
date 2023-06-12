@@ -1,18 +1,19 @@
 const model=require('../models');
 const User=model.User;
+const Nany=model.Nany;
 
 exports.getparent=async(req,res)=>{
     try {
         const account_type=req.body.account_type;
         const page=req.body.page;
-        const limit=req.body.limit;
+        const limit=req.body.limit ||5;
 
         const offset = (page - 1) * limit;
         if(account_type){
-            const parentsdata=await User.findAll({where:{
+            const {rows,count}=await User.findAndCountAll({where:{
                 account_type:account_type
             },offset,limit});
-            res.status(200).json({data:parentsdata});
+            res.status(200).json({data:rows,count:count});
         } 
     } catch (error) {
         console.log(error)
@@ -23,27 +24,37 @@ exports.createnany=async(req,res)=>{
     try {
         const userid=req.userid;
         const user=await User.findOne({where:{id:userid}});
+        console.log("sdbhbf",user)
         const account=user.account_type;
-
+      
         const name=req.body.name;
-        const contact=req.body.contact;
-        const address=req.body.contact;
+        const phone_number=req.body.phone_number;
+        const address=req.body.address;
         const email=req.body.email;
-        const filename=req.file.filename;
- 
         const account_type=req.body.account_type;
+        const filename = req.file.filename.replace('avatar-', '');
+        const price=req.body.price;
+        const average_rating=req.body.average_rating;
+        
         if(account===0){
-        const userdata=await User.create({
-                name:name,
-              contact:contact,
+           const userdata=await User.create({
+             name:name,
+             phone_number:phone_number,
               address:address,
               email:email,
-              image:filename,
+              avatar:filename,
               account_type:account_type
             
             
             });
-        res.status(200).json({data:userdata});
+           
+            await Nany.create({
+             user_id:userdata.id,
+             price:price,
+             average_rating:average_rating
+            })
+        
+         res.status(200).json({data:userdata});
         }
     } catch (error) {
         console.log(error);
@@ -57,13 +68,13 @@ exports.getnany=async(req,res)=>{
         const limit=req.body.limit;
         const offset=(page-1)*limit;
         if(account_type){
-            const nanydata=await User.findAll({where:{account_type:account_type},
+            const  {rows,count}=await User.findAndCountAll({where:{account_type:account_type},
             offset,
             limit
             
             });
 
-            res.status(200).json({data:nanydata});
+            res.status(200).json({data:rows,count:count});
         }
     } catch (error) {
         console.log(error);

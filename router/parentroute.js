@@ -7,10 +7,10 @@ const auth=require('../middelware/auth');
 
 
 router.post('/getparents',auth,parentcontroller.getparent);
-router.post('/createnany',auth,upload.single('image'),parentcontroller.createnany);
+router.post('/createnany',auth,upload.single('avatar'),parentcontroller.createnany);
 router.post('/getnany',auth,parentcontroller.getnany);
 
 router.post('/block',auth,parentcontroller.block);
-router.delete('/delete',auth,parentcontroller.deleteuser);
+router.post('/delete',auth,parentcontroller.deleteuser);
 
 module.exports=router;

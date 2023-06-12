@@ -9,7 +9,7 @@ const auth=require('../middelware/auth');
 router.post('/complaint',auth,complaintcontroller.createcomplaint);
 router.post('/getcomplaint',auth,complaintcontroller.getcomplaint);
 
-router.delete('/deletecomplaint',auth,complaintcontroller.deletecomplaint);
+router.post('/deletecomplaint',auth,complaintcontroller.deletecomplaint);
 
 router.post('/getrequest',auth,complaintcontroller.getrequest)
 

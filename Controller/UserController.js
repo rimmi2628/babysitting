@@ -22,13 +22,14 @@ const transporter= nodemailer.createTransport({
 
 exports.register=async(req,res)=>{
     try {
+       
         const email = req.body.email;
         const password = req.body.password;
         const name=req.body.name;
         const address=req.body.address;
-        const contact=req.body.contact;
+        const phone_number=req.body.phone_number;
         const account_type=req.body.account_type;
-        const filename=req.file.filename
+        const filename = req.file.filename.replace('avatar-', '');
 
 
         const data = await User.findOne({ where: { email: email } });
@@ -41,11 +42,11 @@ exports.register=async(req,res)=>{
      
         const user=await User.create({
             name:name,
-            contact:contact,
+            phone_number:phone_number,
             address:address,
             email:email,
             password:hashpass,
-            image:filename,
+            avatar:filename,
             account_type:account_type
         })
         const payload = {
@@ -75,9 +76,11 @@ exports.login=async(req,res)=>{
                     id:userdata.id,
                     email:userdata.email
                 }
+              const name=userdata.name;
+              const photo_url=userdata.avatar;
 
                 const token=jwt.sign(payload,process.env.secretkey,{expiresIn:'12h'});
-                res.status(200).json({msg:"login successfully.....",token:token});
+                res.status(200).json({msg:"login successfully.....",email:email,name:name, photo_url: photo_url,token:token});
             }
             else{
                 res.status(500).json({success:false,msg:"Email Or Password Does Not Match"});

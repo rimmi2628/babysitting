@@ -35,10 +35,10 @@ exports.getcomplaint=async(req,res)=>{
         const limit=req.body.limit;
         const offset=(page-1)*limit;
        
-        const id=req.body.id;
+        const account_type=req.body.account_type;
         
    
-        const data=await Complaint.findAll({where:{user_id:id},
+        const data=await Complaint.findAll({where:{account_type:account_type},
 
         offset,limit});
         res.status(200).json({data:data});
@@ -54,7 +54,7 @@ exports.deletecomplaint=async(req,res)=>{
   try {
 
     const id=req.body.id;
-   const userid=req.userid;
+    const userid=req.userid;
 
    const user=await User.findOne({where:{id:userid}});
     const account_type = user.account_type;
